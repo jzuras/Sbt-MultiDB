@@ -1,0 +1,49 @@
+﻿@using SbtMultiDB
+@using SbtMultiDB.Data.Repositories
+@using SbtMultiDB.Services
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject DatabaseAvailabilityService DatabaseAvailabilityService
+@{
+    var currentDatabase = IDivisionRepository.RepositoryType.Default;
+
+    bool isCosmosAvailable = DatabaseAvailabilityService.IsCosmosAvailable;
+    bool isSqlServerAvailable = DatabaseAvailabilityService.IsSqlServerAvailable;
+    bool isMySqlAvailable = DatabaseAvailabilityService.IsMySqlAvailable;
+    bool isPostgreSqlAvailable = DatabaseAvailabilityService.IsPostgreSqlAvailable;
+
+    if (this.HttpContextAccessor.HttpContext != null)
+    {
+        var session = this.HttpContextAccessor.HttpContext.Session;
+        currentDatabase = session.CurrentDatabase();
+    }
+    var allowSelectionCosmos = (currentDatabase != IDivisionRepository.RepositoryType.Cosmos &&
+                                isCosmosAvailable == true);
+    var allowSelectionSqlServer = (currentDatabase != IDivisionRepository.RepositoryType.SqlServer &&
+                                isSqlServerAvailable == true);
+    var allowSelectionMySql = (currentDatabase != IDivisionRepository.RepositoryType.MySql &&
+                                isMySqlAvailable == true);
+    var allowSelectionPostgreSql = (currentDatabase != IDivisionRepository.RepositoryType.PostgreSql &&
+                                isPostgreSqlAvailable == true);
+
+    // Note - HTML code below here is intentionally indented for a reason:
+    // to line up with the elements above it (for easier reading of page source).
+}
+<li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="currentDB" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Current DB: @currentDatabase.ToString()
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="homeDropdown">
+                                <a id="selectCosmos" class="dropdown-item @((allowSelectionCosmos == false) ? "disabled" : "")" href="#" onclick="changeDatabase('@IDivisionRepository.RepositoryType.Cosmos.ToString()')">
+                                    Cosmos @((isCosmosAvailable == false) ? "(disabled)" : "")
+                                </a>
+                                <a id="selectSqlServer" class="dropdown-item @((allowSelectionSqlServer == false) ? "disabled" : "")" href="#" onclick="changeDatabase('@IDivisionRepository.RepositoryType.SqlServer.ToString()')">
+                                    SqlServer @((isSqlServerAvailable == false) ? "(disabled)" : "")
+                                </a>
+                                <a id="selectMySql" class="dropdown-item @((allowSelectionMySql == false) ? "disabled" : "")" href="#" onclick="changeDatabase('@IDivisionRepository.RepositoryType.MySql.ToString()')">
+                                    MySql @((isMySqlAvailable == false) ? "(disabled)" : "")
+                                </a>
+                                <a id="selectPostgreSql" class="dropdown-item @((allowSelectionPostgreSql == false) ? "disabled" : "")" href="#" onclick="changeDatabase('@IDivisionRepository.RepositoryType.PostgreSql.ToString()')">
+                                    PostgreSql @((isPostgreSqlAvailable == false) ? "(disabled)" : "")
+                                </a>
+                            </div>
+                        </li>

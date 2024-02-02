@@ -1,0 +1,81 @@
+﻿@model StandingsViewModel
+
+<vc:Header sub-heading="Standings & Schedule" partial-title="Standings: @(Model.Division.Abbreviation)" />
+
+<link rel="stylesheet" href="~/css/standings.css" asp-append-version="true" />
+<div class="table-responsive">
+    <h4>Standings:</h4>
+    <div style="text-align:left;">
+        <span style="float:left;">League: &emsp;<b>@Model.Division.League</b></span>
+        <span style="float:right;" id="spanUpdated">Updated: &emsp;<b>@Model.Division.Updated.ToString("MM/dd/yyyy h:mm tt")</b></span>
+        <span style="display:block; text-align:center;">Division: &emsp;<b>@Model.Division.NameOrNumber</b></span>
+    </div>
+    <p />
+    <table class="table standings-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Ties</th>
+                @if (@Model.ShowOvertimeLosses == true)
+                {
+                    <th>OT Losses</th>
+                }
+                <th>Win %</th>
+                <th>GB</th>
+                <th>RS</th>
+                <th>RA</th>
+                <th>Forfeits</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Division.Standings)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Wins)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Losses)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ties)
+                    </td>
+                    @if (@Model.ShowOvertimeLosses == true)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OvertimeLosses)
+                        </td>
+                    }
+                    <td>
+                        @Html.Raw(item.Percentage.ToString(".000"))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GB)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RunsScored)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RunsAgainst)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Forfeits)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<hr />
+
+<div class="table-responsive" id="scheduleContainer">
+    @{
+        await Html.RenderPartialAsync("_SchedulePartial", Model);
+    }
+</div>

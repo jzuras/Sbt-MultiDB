@@ -1,0 +1,29 @@
+﻿@using SbtMultiDB.Data.Repositories
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    var currentDatabase = IDivisionRepository.RepositoryType.Default;
+
+    if (this.HttpContextAccessor.HttpContext != null)
+    {
+        var session = this.HttpContextAccessor.HttpContext.Session;
+        currentDatabase = session.CurrentDatabase();
+    }
+
+    var isCurrentDBUnavilable = (currentDatabase == IDivisionRepository.RepositoryType.Unavailable);
+
+}
+<vc:Header sub-heading="Home" partial-title="Home Page" />
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to the Multi-Database Demo for SotballTech!</h1>
+    <p>Please select from the menu choices above to get started.</p>
+</div>
+<div>
+    @if (isCurrentDBUnavilable)
+    {
+        <div class="alert alert-danger mt-3">
+            The currently selected database is unavailable. Please choose an available database before continuing.
+        </div>
+    }
+</div>

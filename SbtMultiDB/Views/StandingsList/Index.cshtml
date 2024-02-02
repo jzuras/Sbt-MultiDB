@@ -1,0 +1,21 @@
+﻿@model IList<Division>
+
+<vc:Header sub-heading="Divisions" />
+
+<table class="table-responsive">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Index" asp-controller="Standings" title="View Standings"
+                        asp-route-organization="@item.Organization" 
+                        asp-route-abbreviation="@item.Abbreviation">
+                        @Html.DisplayFor(modelItem => item.League) @Html.DisplayFor(modelItem => item.NameOrNumber)
+                        (@Html.DisplayFor(modelItem => item.Abbreviation))
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

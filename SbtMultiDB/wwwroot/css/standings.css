@@ -1,0 +1,42 @@
+﻿.standings-table table,
+.schedule-table table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.standings-table thead th,
+.schedule-table thead th {
+    background-color: darkblue;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid black;
+}
+
+    .standings-table th:first-child,
+    .schedule-table th:first-child {
+        text-align: left;
+    }
+
+.standings-table tr:nth-child(even),
+.schedule-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.standings-table td,
+.schedule-table td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.standings-table tr:nth-child(odd) td,
+.schedule-table tr:nth-child(odd) td {
+    background-color: #e6e6e6;
+}
+
+.standings-table td:first-child,
+.schedule-table td:first-child {
+    text-align: left;
+}

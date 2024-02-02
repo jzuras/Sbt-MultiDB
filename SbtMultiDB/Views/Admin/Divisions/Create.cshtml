@@ -1,0 +1,40 @@
+﻿@model Division
+
+<vc:Header sub-heading="Admin: Create Division" />
+
+<form method="post">
+    <input type="hidden" asp-for="Organization" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group row mb-3">
+        <label asp-for="Abbreviation" class="col-3 col-form-label"></label>
+        <input asp-for="Abbreviation" class="col-3" aria-required="true" />
+        <span asp-validation-for="Abbreviation" class="text-danger col-6"></span>
+    </div>
+    <div class="form-group row mb-3">
+        <label asp-for="League" class="col-3 col-form-label"></label>
+        <input asp-for="League" class="col-3" aria-required="true" />
+        <span asp-validation-for="League" class="text-danger col-6"></span>
+    </div>
+    <div class="form-group row mb-3">
+        <label asp-for="NameOrNumber" class="col-3 col-form-label">Name or #</label>
+        <input asp-for="NameOrNumber" class="col-3" aria-required="true" />
+        <span asp-validation-for="NameOrNumber" class="text-danger col-6"></span>
+    </div>
+    <div class="form-group mb-3">
+        <feature name="EnableSubmitButton" negate="true">
+            <input type="submit" id="CreateButton" value="Create" class="btn btn-primary" disabled />
+        </feature>
+        <feature name="EnableSubmitButton">
+            <input type="submit" id="CreateButton" value="Create" class="btn btn-primary" />
+        </feature>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index" title="List of Divisions"
+        asp-route-organization="@Model.Organization">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

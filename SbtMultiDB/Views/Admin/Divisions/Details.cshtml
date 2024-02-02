@@ -1,0 +1,44 @@
+﻿@model Division
+
+<vc:Header sub-heading="Admin: Division Details" />
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Abbreviation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Abbreviation)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.League)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.League)
+        </dd>
+        <dt class="col-sm-2">
+            Name or #
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NameOrNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Locked)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Locked)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Updated)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Updated)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-abbreviation="@Model.Abbreviation" title="Edit This Division"
+        asp-route-organization="@Model.Organization">Edit</a> |
+    <a asp-action="Index" title="List of Divisions"
+       asp-route-organization="@Model.Organization">Back to List</a>
+</div>

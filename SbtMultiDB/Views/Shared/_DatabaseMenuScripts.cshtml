@@ -1,0 +1,23 @@
+﻿<script>
+    var currentDatabaseKey = 'CurrentDatabase';
+
+    function changeDatabase(database) {
+        localStorage.setItem(currentDatabaseKey, database);
+        window.location.href = '@Url.Action("ChangeDatabase", "Home")' + '?database=' + encodeURIComponent(database);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var currentDatabaseFromLocalStorage = localStorage.getItem(currentDatabaseKey);
+        // Allow server-side code to initialize session state if necessary.
+        $.post('@Url.Action("InitializeSessionState", "Home")', { database: currentDatabaseFromLocalStorage },
+            function (result) {
+                if (result === true) {
+                    // Return value is true only when the session state was empty
+                    // and had to be initialized. When true,
+                    // reload the page now that session state has the correct value.
+                    location.reload(true);
+                }
+            }
+        );
+    });
+    </script>

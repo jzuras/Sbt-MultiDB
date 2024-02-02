@@ -1,0 +1,18 @@
+﻿@model SbtMultiDB.ViewComponents.HeaderViewComponent.HeaderRecord
+
+@{
+    var CurrentOrganization = TempData.CurrentOrganization();
+    if (string.IsNullOrEmpty(Model.PartialTitle))
+    {
+        TempData.Title(CurrentOrganization + ": " + Model.SubHeading);
+    }
+    else
+    {
+        TempData.Title(CurrentOrganization + ": " + Model.PartialTitle);
+    }
+}
+
+<h1 id="organizationHeader">@CurrentOrganization</h1>
+<h4>@Model.SubHeading</h4>
+<hr style="border: 2px solid black" />
+<p />

@@ -1,0 +1,68 @@
+﻿@model DivisionListViewModel
+
+<vc:Header sub-heading="Admin: Divisions" />
+
+<p>
+    <a asp-action="Create" title="Create"
+        asp-route-organization="@Model.Organization">Create New Division</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DivisionsList[0].Abbreviation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DivisionsList[0].League)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DivisionsList[0].NameOrNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DivisionsList[0].Updated)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DivisionsList[0].Locked)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.DivisionsList)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Abbreviation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.League)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NameOrNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Locked)
+                </td>
+                <td>
+                        <a asp-action="Edit" asp-route-abbreviation="@item.Abbreviation" title="Edit"
+                            asp-route-organization="@Model.Organization">Edit</a> |
+                        <a asp-action="Details" asp-route-abbreviation="@item.Abbreviation" title="Details"
+                           asp-route-organization="@Model.Organization">Details</a> |
+                        <a asp-action="Delete" asp-route-abbreviation="@item.Abbreviation" title="Delete"
+                           asp-route-organization="@Model.Organization">Delete</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <a asp-action="Index" asp-controller="Admin" title="Back to Admin Page"
+        asp-route-organization="@Model.Organization">Back to Admin</a>
+</div>

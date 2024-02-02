@@ -1,0 +1,56 @@
+﻿@model LoadScheduleViewModel
+
+<vc:Header sub-heading="Admin: Load Schedule" />
+
+<h5>Choose Division and File </h5>
+<p />
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Organization" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div><div></div><div></div>
+    <div class="grid-container-load-schedule">
+        <label asp-for="Abbreviation" class="" aria-label="Division Abbreviation">Div Abbreviation</label>
+        <input asp-for="Abbreviation" class="" aria-required="true" />
+        <span asp-validation-for="Abbreviation" class="text-danger"></span>
+        <label asp-for="UsesDoubleHeaders" class="l" aria-label="Uses DoubleHeaders">Uses Double-headers</label>
+        <input class="form-check-input" asp-for="UsesDoubleHeaders" class="" />
+        <span asp-validation-for="UsesDoubleHeaders" class="text-danger"></span>
+        <label asp-for="ScheduleFile" class="" aria-label="Schedule File"></label>
+        <input type="file" asp-for="ScheduleFile" class="" aria-required="true" />
+        <span asp-validation-for="ScheduleFile" class="text-danger"></span>
+        <feature name="EnableSubmitButton" negate="true">
+            <input type="submit" value="Process Schedule File" id="ProcessFile" class="btn btn-primary" disabled />
+        </feature>
+        <feature name="EnableSubmitButton">
+            <input type="submit" value="Process Schedule File" id="ProcessFile" class="btn btn-primary" />
+        </feature>
+    </div>
+</form>
+<p />
+<p></p>
+@if (!string.IsNullOrEmpty(Model.ResultMessage))
+{
+    <div class="alert @(Model.ResultSuccess ? "alert-primary" : "alert-danger")">@Html.Raw(Model.ResultMessage)</div>
+}
+
+<div>
+    <a asp-action="Index" title="Back to Admin Page"
+    asp-route-organization="@Model.Organization">Back to Admin</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Attach an event listener to the file input change event
+            $("#ScheduleFile").change(function () {
+                // Clear the validation message when a file is chosen
+                $("span[data-valmsg-for='ScheduleFile']").text('');
+            });
+        });
+    </script>
+}
+

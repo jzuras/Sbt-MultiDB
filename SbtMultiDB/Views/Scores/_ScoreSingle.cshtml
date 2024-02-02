@@ -1,0 +1,88 @@
+﻿@model ScoresViewModel
+
+@{
+    var index = Convert.ToInt32(ViewData["index"]!);
+}
+
+<hr align="center" color="red" width="50%">
+
+<h4>Game #@(index + 1)</h4>
+
+<input type="hidden" asp-for="Schedule[index].Day" />
+<input type="hidden" asp-for="Schedule[index].Time" />
+<input type="hidden" asp-for="Schedule[index].Field" />
+<input type="hidden" asp-for="Schedule[index].Home" />
+<input type="hidden" asp-for="Schedule[index].Visitor" />
+
+<input type="hidden" asp-for="Schedule[index].GameID" />
+
+<div class="form-group row mb-3">
+    <label asp-for="Schedule[index].Time" class="col-2 col-form-label fw-bold">Time</label>
+    <div class="col-2">
+        <label asp-for="Schedule[index].Time"
+               class="col-form-label">@Html.Raw(Model.Schedule[index].Time?.ToString("h:mm tt"))</label>
+    </div>
+</div>
+
+<div class="form-group row mb-3">
+    <label asp-for="Schedule[index].Home" class="col-2 col-form-label fw-bold">Home Team</label>
+    <div class="col-2">
+        <label asp-for="Schedule[index].Home" class="col-form-label">@Model.Schedule[index].Home</label>
+    </div>
+    <div class="col-2">
+        <input asp-for="Schedule[index].HomeScore" class="form-control" autofocus aria-required="true" />
+    </div>
+    <div class="col-2 align-self-center">
+        <input class="form-check-input" asp-for="Schedule[index].HomeForfeit" id="chkHome" />
+        <label for="chkHome">Home Forfeit</label>
+    </div>
+    <div class="col-4">
+        <span asp-validation-for="Schedule[index].HomeScore" class="text-danger" id="vldHomeScore"></span>
+    </div>
+</div>
+
+<div class="form-group row mb-3">
+    <label asp-for="Schedule[index].Visitor" class="col-2 col-form-label fw-bold">Visiting Team</label>
+    <div class="col-2">
+        <label asp-for="Schedule[index].Visitor" class="col-form-label">@Model.Schedule[index].Visitor</label>
+    </div>
+    <div class="col-2">
+        <input asp-for="Schedule[index].VisitorScore" class="form-control" aria-required="true" />
+    </div>
+    <div class="col-2 align-self-center">
+        <input class="form-check-input" asp-for="Schedule[index].VisitorForfeit" id="chkVisitor" />
+        <label for="chkVisitor">Visitor Forfeit</label>
+    </div>
+    <div class="col-4">
+        <span asp-validation-for="Schedule[index].VisitorScore" class="text-danger" id="vldVisitorScore"></span>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("input[name='Schedule[" + @index + "].VisitorForfeit']").click(function () {
+            if ($(this).is(":checked")) {
+                document.querySelector("span[data-valmsg-for='Schedule[" + @index + "].VisitorScore']").textContent = "";
+                document.querySelector("span[data-valmsg-for='Schedule[" + @index + "].HomeScore']").textContent = "";
+                $("input[name='Schedule[" + @index + "].VisitorScore']").val(0);
+                $("input[name='Schedule[" + @index + "].HomeScore']").val(7);
+                if ($("input[name='Schedule[" + @index + "].HomeForfeit']").is(":checked")) {
+                    $("input[name='Schedule[" + @index + "].HomeScore']").val(0);
+                }
+            }
+        });
+
+        $("input[name='Schedule[" + @index + "].HomeForfeit']").click(function () {
+            if ($(this).is(":checked")) {
+                document.querySelector("span[data-valmsg-for='Schedule[" + @index + "].VisitorScore']").textContent = "";
+                document.querySelector("span[data-valmsg-for='Schedule[" + @index + "].HomeScore']").textContent = "";
+                $("input[name='Schedule[" + @index + "].VisitorScore']").val(7);
+                $("input[name='Schedule[" + @index + "].HomeScore']").val(0);
+                if ($("input[name='Schedule[" + @index + "].VisitorForfeit']").is(":checked")) {
+                    $("input[name='Schedule[" + @index + "].VisitorScore']").val(0);
+                }
+            }
+        });
+    });
+</script>

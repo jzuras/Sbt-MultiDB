@@ -1,0 +1,132 @@
+﻿@model StandingsViewModel
+
+<h4 style="display: flex">
+    Schedule: &nbsp;
+    <select asp-for="TeamName" id="teamNameSelect">
+        <option value="">All Teams</option>
+        @foreach (var standing in Model.Division.Standings)
+        {
+            <option value="@standing.Name">@standing.Name</option>
+        }
+    </select>
+</h4>
+@if (Model.Division.Locked)
+{
+    @:This division is locked - scores cannot be reported.
+}
+else
+{
+    @:Click on Team Name to Report Scores
+}
+<table class="table schedule-table">
+    <thead>
+        <tr>
+            <th>Visitor</th>
+            <th>Score</th>
+            <th>Home</th>
+            <th>Score</th>
+            <th>Date</th>
+            <th>Field</th>
+            <th>Time</th>
+            <th colspan="3">Rescheduled</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var game in Model.Division.Schedule)
+        {
+            <tr>
+                @if (game.Visitor.ToUpper().StartsWith("WEEK"))
+                {
+                    <td style="color:red; text-decoration:underline; font-weight:bold">@game.Visitor.ToUpper()</td>
+                }
+                else
+                {
+                    <td>
+                        @if (Model.Division.Locked == false)
+                        {
+                            <a href="@(Url.Action("Index", "Scores", new { organization = Model.Division.Organization, abbreviation = Model.Division.Abbreviation, gameID = @game.GameID}))" title="Report Score">
+                                @game.Visitor
+                            </a>
+                        }
+                        else
+                        {
+                            @game.Visitor
+                        }
+                    </td>
+                }
+                <td>@game.VisitorScore</td>
+                <td>
+                    @if (Model.Division.Locked == false)
+                    {
+                        <a href="@(Url.Action("Index", "Scores", new { organization = Model.Division.Organization, abbreviation = Model.Division.Abbreviation, gameID = @game.GameID}))" title="Report Score">
+                            @game.Home
+                        </a>
+                    }
+                    else
+                    {
+                        @game.Home
+                    }
+                </td>
+                <td>@game.HomeScore</td>
+                <td>@game.Day?.ToString("MMM-dd")</td>
+                <td>@game.Field</td>
+                <td>@game.Time?.ToString("h:mm tt")</td>
+
+                @if (!string.IsNullOrEmpty(game.MakeupField))
+                {
+                    <td>@game.MakeupDay?.ToString("MMM-dd")</td>
+                    <td>@game.MakeupField</td>
+                    <td>@game.MakeupTime?.ToString("h:mm tt")</td>
+                }
+                else
+                {
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    document.getElementById("teamNameSelect").addEventListener("change", function () {
+        var selectedTeam = this.value;
+
+        // Make an AJAX request to get the updated schedule.
+        $.get('@Url.Action("Index", "Standings")',
+            {
+                organization: '@Model.Division.Organization',
+                id: '@Model.Division.Abbreviation',
+                teamName: selectedTeam
+            }, function (data) {
+
+            $('#scheduleContainer').html(data);
+        });
+    });
+
+    // JS code below deals with resetting the selection list to All Teams after a partial
+    // rendering followed by clicking away from the page, and then using the back button.
+    // The browser resets to a full schedule but the selection list shows the last value
+    // (or in the case of firefox, the first change to the selection list).
+    // This code resets the selection list to All Teams, 
+    // using unload, pageShow, and localStorage.
+
+    window.addEventListener('pageshow', function (event) {
+
+        var dropdown = document.getElementById("teamNameSelect");
+
+        if (localStorage.getItem('standingsPageUnloading') === 'true') 
+        {
+            localStorage.removeItem('standingsPageUnloading');
+            dropdown.selectedIndex = 0;
+        }
+    });
+
+    window.addEventListener('unload', function () 
+    {
+        var dropdown = document.getElementById("teamNameSelect");
+        localStorage.setItem('standingsPageUnloading', 'true');
+    });
+</script>

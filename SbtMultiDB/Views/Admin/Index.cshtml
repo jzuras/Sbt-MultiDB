@@ -1,0 +1,35 @@
+﻿@model (string Organization, List<string> OrganizationList)
+
+<vc:Header sub-heading="Admin Functions" />
+
+Organization:
+<select id="selectOrg" onchange="updateLinks()">
+    @foreach (var organization in Model.OrganizationList)
+    {
+        if (string.Equals(organization, Model.Organization))
+        {
+            <option value="@organization" selected="true">@organization</option>
+        }
+        else
+        {
+            <option value="@organization">@organization</option>
+        }
+    }
+</select>
+<p />
+<p>
+    <a id="scheduleLink" title="Load Schedule for a Division"
+        href="/Admin/LoadSchedule/@Model.Organization">Load Schedule File</a>
+</p>
+<p>
+    <a id="divisionLink" title="List of Divisions"
+        href="/Admin/Divisions/@Model.Organization">Edit Divisions</a>
+</p>
+<p></p>
+
+<script>
+    function updateLinks() {
+        var selectedValue = $('#selectOrg').val();
+        window.location.href = "/Admin/" + selectedValue;
+    }
+</script>
