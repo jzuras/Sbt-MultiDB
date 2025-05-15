@@ -12,4 +12,4 @@ Part 3 is [here](https://www.linkedin.com/posts/jimzuras_learning-journey-part-9
 
 Other enhancements in this version are described in [this LI post](https://www.linkedin.com/posts/jimzuras_learning-journey-part-10-multi-database-activity-7159296349102895104-ZIwh).
 
-The app running on Azure can be found [here](https://sbt-multidb.azurewebsites.net/).
+The app is running on Azure; contact me via LinkedIn for more info.
